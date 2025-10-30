@@ -14,6 +14,7 @@ public class Evento {
     private String descripcion;
     private Timestamp fecha;
     private int capacidad;
+    private long idLugar;
     private double precio;
 
     public Evento() {

@@ -10,7 +10,7 @@ import lombok.Setter;
 import java.sql.Timestamp;
 @Getter
 @Setter
-public class EventoRequest {
+public class  EventoRequest {
     @Schema(description = "El id unico del evento", example = "1", accessMode = Schema.AccessMode.READ_ONLY)
     private long id;
 

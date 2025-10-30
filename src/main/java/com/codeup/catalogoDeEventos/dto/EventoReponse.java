@@ -8,19 +8,19 @@ import java.sql.Timestamp;
 public class EventoReponse {
     private long id;
     private String nombre;
-    private String tipo;
-    private Timestamp fehca_inicio;
-    private Timestamp fecha_fin;
+    private String descripcion;
+    private Timestamp fecha;
     private int capacidad;
+    private long idLugar;
     private double precio;
 
-    public EventoReponse(long id, String nombre, String tipo, Timestamp fehca_inicio, Timestamp fecha_fin, int capacidad, double precio) {
+    public EventoReponse(long id, String nombre, String descripcion, Timestamp fecha, int capacidad, long idLugar, double precio) {
         this.id = id;
         this.nombre = nombre;
-        this.tipo = tipo;
-        this.fehca_inicio = fehca_inicio;
-        this.fecha_fin = fecha_fin;
+        this.descripcion = descripcion;
+        this.fecha = fecha;
         this.capacidad = capacidad;
+        this.idLugar = idLugar;
         this.precio = precio;
     }
 }
