@@ -2,6 +2,7 @@ package com.codeup.catalogoDeEventos.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,8 +10,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LugarRequest {
-    @Schema(description = "El id unico del evento", example = "1", accessMode = Schema.AccessMode.READ_ONLY)
-    private long id;
 
     @NotBlank(message = "El nombre es obligatorio")
     @Size(min = 3, max = 30, message = "El nombre debe contener entre 3-30 caracteres")
@@ -32,7 +31,7 @@ public class LugarRequest {
     @Schema(description = "El pais del evento", example = "Colombia", required = true)
     private String pais;
 
-    @NotBlank(message = "El precio es obligatorio")
+    @Positive(message = "El precio debe ser mayor a 0")
     @Schema(description = "El precio del lugar", example = "100", required = true)
     private double precio;
 

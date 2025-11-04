@@ -9,7 +9,7 @@ import java.util.List;
     public class ErrorResponse {
 
         @Schema(description = "Momento en que ocurrió el error", example = "2025-10-28T10:30:00")
-        private LocalDateTime timestamp;
+        private LocalDateTime fecha;
 
         @Schema(description = "Código de estado HTTP", example = "404")
         private int status;
@@ -27,11 +27,11 @@ import java.util.List;
         private List<String> details;
 
         public ErrorResponse() {
-            this.timestamp = LocalDateTime.now();
+            this.fecha = LocalDateTime.now();
         }
 
         public ErrorResponse(int status, String error, String message, String path) {
-            this.timestamp = LocalDateTime.now();
+            this.fecha = LocalDateTime.now();
             this.status = status;
             this.error = error;
             this.message = message;
@@ -39,7 +39,7 @@ import java.util.List;
         }
 
         public ErrorResponse(int status, String error, String message, String path, List<String> details) {
-            this.timestamp = LocalDateTime.now();
+            this.fecha = LocalDateTime.now();
             this.status = status;
             this.error = error;
             this.message = message;

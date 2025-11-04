@@ -1,7 +1,9 @@
 package com.codeup.catalogoDeEventos.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+@AllArgsConstructor
 @Getter
 public class LugarRespose {
 
@@ -11,13 +13,4 @@ public class LugarRespose {
     private String ciudad;
     private String pais;
     private int capacidad;
-
-    public LugarRespose(long id, String nombre, String direccion, String ciudad, String pais, int capacidad) {
-        this.id = id;
-        this.nombre = nombre;
-        this.direccion = direccion;
-        this.ciudad = ciudad;
-        this.pais = pais;
-        this.capacidad = capacidad;
-    }
 }
