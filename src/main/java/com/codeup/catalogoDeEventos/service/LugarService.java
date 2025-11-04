@@ -1,73 +1,56 @@
 package com.codeup.catalogoDeEventos.service;
 
-import com.codeup.catalogoDeEventos.domain.Lugar;
+import com.codeup.catalogoDeEventos.domain.LugarEntity;
 import com.codeup.catalogoDeEventos.dto.LugarRequest;
+import com.codeup.catalogoDeEventos.repository.LugarRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Service
+@RequiredArgsConstructor
 public class LugarService {
-    private final List<Lugar> lista = new ArrayList<>();
-    // 1. Añadir el contador para IDs únicos
-    private final AtomicLong contador = new AtomicLong(1);
 
+    private final LugarRepository repository;
 
-    public Lugar crear(LugarRequest request) {
-        if(request == null){
-            throw new IllegalArgumentException("La solicitud no debe ser nula.");
+    public LugarEntity crear(LugarRequest request) {
+        LugarEntity lugar = LugarEntity.builder()
+                .nombre(request.getNombre())
+                .capacidad(request.getCapacidad())
+                .direccion(request.getDireccion())
+                .pais(request.getPais())
+                .ciudad(request.getCiudad())
+                .build();
+
+        return repository.save(lugar);
+    }
+
+    public List<LugarEntity> listarTodos() {
+        return repository.findAll();
+    }
+
+    public Optional<LugarEntity> buscarPorID(long id) {
+        return repository.findById(id);
+    }
+
+    public Optional<LugarEntity> actualizar(long id, LugarRequest nuevo) {
+        return repository.findById(id).map(lugar -> {
+            lugar.setNombre(nuevo.getNombre());
+            lugar.setCapacidad(nuevo.getCapacidad());
+            lugar.setDireccion(nuevo.getDireccion());
+            lugar.setPais(nuevo.getPais());
+            lugar.setCiudad(nuevo.getCiudad());
+            return repository.save(lugar);
+        });
+    }
+
+    public boolean eliminar(long id) {
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+            return true;
         }
-
-        Lugar lugar = new Lugar();
-        lugar.setId(contador.getAndIncrement()); // Asignar ID único
-        lugar.setNombre(request.getNombre());
-        lugar.setCapacidad(request.getCapacidad());
-        lugar.setDireccion(request.getDireccion());
-        lugar.setPais(request.getPais());
-        lugar.setCiudad(request.getCiudad());
-
-        lista.add(lugar);
-        return lugar;
-    }
-
-    public List<Lugar> listarTodos(){
-        return lista;
-    }
-
-    // 3. Devolver Optional para manejar el 404 en el Controller
-    public Optional<Lugar> buscarPorID(long id){
-        // La validación de id <= 0 se puede mover al DTO o mantener aquí como pre-condición
-        if(id <= 0){throw  new IllegalArgumentException("El ID debe ser positivo");}
-
-        return  lista.stream()
-                .filter(l -> l.getId() == id)
-                .findFirst(); // Si no se encuentra, devuelve Optional.empty()
-    }
-
-    // 4. Usar DTO en la entrada y devolver Optional
-    public Optional<Lugar> actualizar(long id, LugarRequest nuevo) {
-        if(id <= 0){throw  new IllegalArgumentException("El ID debe ser positivo");}
-
-        return lista.stream()
-                .filter(l -> l.getId() == id)
-                .findFirst()
-                .map(l -> {
-                    // Mapear el DTO al objeto existente
-                    l.setNombre(nuevo.getNombre());
-                    l.setCapacidad(nuevo.getCapacidad());
-                    l.setDireccion(nuevo.getDireccion());
-                    l.setPais(nuevo.getPais());
-                    l.setCiudad(nuevo.getCiudad());
-                    return l;
-                });
-    }
-
-
-    public boolean eliminar(long id){
-        if(id <= 0){throw  new IllegalArgumentException("El ID debe ser positivo");}
-        return lista.removeIf(l -> l.getId() == id);
+        return false;
     }
 }

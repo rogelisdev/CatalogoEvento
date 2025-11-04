@@ -1,14 +1,14 @@
 package com.codeup.catalogoDeEventos.dto;
 
+import com.codeup.catalogoDeEventos.domain.LugarEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
-public class EventoReponse {
+public class EventoResponse {
     private long id;
     private String nombre;
     private String descripcion;
@@ -17,5 +17,6 @@ public class EventoReponse {
     private long idLugar;
     private double precio;
 
+    private LugarEntity lugar;
 }
 

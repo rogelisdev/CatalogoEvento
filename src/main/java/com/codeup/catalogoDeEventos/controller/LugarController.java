@@ -2,7 +2,7 @@ package com.codeup.catalogoDeEventos.controller;
 
 import com.codeup.catalogoDeEventos.advice.ErrorResponse;
 import com.codeup.catalogoDeEventos.advice.ResourceNotFoundException;
-import com.codeup.catalogoDeEventos.domain.Lugar;
+import com.codeup.catalogoDeEventos.domain.LugarEntity;
 import com.codeup.catalogoDeEventos.dto.LugarRequest;
 import com.codeup.catalogoDeEventos.service.LugarService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -41,12 +41,12 @@ public class LugarController {
                     description = "Lista de lugares obtenidos exitosamente",
                     content = @Content(
                             mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = Lugar.class))
+                            array = @ArraySchema(schema = @Schema(implementation = LugarEntity.class))
                     ))
     })
     @GetMapping
-    public ResponseEntity<List<Lugar>> listarTodo() {
-        List<Lugar> response = service.listarTodos();
+    public ResponseEntity<List<LugarEntity>> listarTodo() {
+        List<LugarEntity> response = service.listarTodos();
         return ResponseEntity.ok(response);
     }
 
@@ -57,62 +57,36 @@ public class LugarController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     description = "Lugar obtenido exitosamente",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = Lugar.class),
-                            examples = @ExampleObject(
-                                    value = "{\"id\": 1, \"nombre\": \"Estadio Nacional\", \"capacidad\": 50000, \"direccion\": \"Av. Principal 123\", \"pais\": \"Chile\", \"ciudad\": \"Santiago\"}"
-                            ))),
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = LugarEntity.class))),
             @ApiResponse(responseCode = "404",
                     description = "Lugar no encontrado",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorResponse.class),
-                            examples = @ExampleObject(
-                                    value = "{\"timestamp\": \"2025-11-03T20:00:00\", \"status\": 404, \"error\": \"Not Found\", \"message\": \"Lugar con el ID 100 no encontrado\", \"path\": \"/api/lugar/100\"}"
-                            )))
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorResponse.class)))
     })
     @GetMapping("/{id}")
-    public ResponseEntity<Lugar> obtenerPorID(
+    public ResponseEntity<LugarEntity> obtenerPorID(
             @Parameter(description = "ID del lugar a buscar", example = "1", required = true)
             @PathVariable long id) {
-        return service.buscarPorID(id)
-                .map(ResponseEntity::ok)
+        LugarEntity lugar = service.buscarPorID(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Lugar", id));
+        return ResponseEntity.ok(lugar);
     }
 
     // ======================================================
     // 3. CREAR
     // ======================================================
-    @Operation(summary = "Agregar lugar", description = "Agrega un nuevo lugar o venue al catálogo")
+    @Operation(summary = "Agregar lugar", description = "Agrega un nuevo lugar al catálogo")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Lugar creado exitosamente",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Lugar.class),
-                            examples = @ExampleObject(
-                                    value = "{\"id\": 5, \"nombre\": \"Teatro Municipal\", \"capacidad\": 500, \"direccion\": \"Calle Falsa 123\", \"pais\": \"Colombia\", \"ciudad\": \"Bogotá\"}"
-                            ))),
-            @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorResponse.class)))
+            @ApiResponse(responseCode = "201", description = "Lugar creado exitosamente"),
+            @ApiResponse(responseCode = "400", description = "Datos inválidos")
     })
     @PostMapping
     public ResponseEntity<Map<String, Object>> agregar(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                    description = "Datos del lugar a crear",
-                    required = true,
-                    content = @Content(
-                            schema = @Schema(implementation = LugarRequest.class),
-                            examples = @ExampleObject(
-                                    value = "{\"nombre\": \"Teatro Municipal\", \"capacidad\": 500, \"direccion\": \"Calle Falsa 123\", \"pais\": \"Colombia\", \"ciudad\": \"Bogotá\"}"
-                            )
-                    )
-            )
             @Valid @RequestBody LugarRequest request) {
 
-        Lugar creado = service.crear(request);
+        LugarEntity creado = service.crear(request);
 
-        // 🔹 Agregamos cuerpo de respuesta con mensaje y datos
         Map<String, Object> responseBody = new HashMap<>();
         responseBody.put("mensaje", "Lugar creado exitosamente");
         responseBody.put("lugar", creado);
@@ -123,46 +97,34 @@ public class LugarController {
     // ======================================================
     // 4. ACTUALIZAR
     // ======================================================
-    @Operation(summary = "Actualizar lugar", description = "Actualiza un lugar (venue) existente")
+    @Operation(summary = "Actualizar lugar", description = "Actualiza un lugar existente")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",
-                    description = "Lugar actualizado exitosamente",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Lugar.class))),
-            @ApiResponse(responseCode = "400",
-                    description = "Datos de entrada inválidos (ej. nombre vacío)",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorResponse.class))),
-            @ApiResponse(responseCode = "404",
-                    description = "Lugar no encontrado",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorResponse.class)))
+            @ApiResponse(responseCode = "200", description = "Lugar actualizado exitosamente"),
+            @ApiResponse(responseCode = "404", description = "Lugar no encontrado")
     })
     @PutMapping("/{id}")
     public ResponseEntity<Map<String, Object>> actualizar(
-            @Parameter(description = "ID del lugar para actualizar", example = "1", required = true)
+            @Parameter(description = "ID del lugar", example = "1", required = true)
             @PathVariable long id,
             @Valid @RequestBody LugarRequest request) {
 
-        return service.actualizar(id, request)
-                .map(lugarActualizado -> {
-                    Map<String, Object> responseBody = new HashMap<>();
-                    responseBody.put("mensaje", "Lugar con ID " + id + " actualizado exitosamente.");
-                    responseBody.put("lugar", lugarActualizado);
-                    return ResponseEntity.ok(responseBody);
-                })
+        LugarEntity actualizado = service.actualizar(id, request)
                 .orElseThrow(() -> new ResourceNotFoundException("Lugar", id));
+
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("mensaje", "Lugar actualizado exitosamente");
+        responseBody.put("lugar", actualizado);
+
+        return ResponseEntity.ok(responseBody);
     }
 
     // ======================================================
     // 5. ELIMINAR
     // ======================================================
-    @Operation(summary = "Eliminar un lugar", description = "Elimina un lugar (venue) existente")
+    @Operation(summary = "Eliminar un lugar", description = "Elimina un lugar existente")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Lugar eliminado exitosamente"),
-            @ApiResponse(responseCode = "404", description = "Lugar no encontrado",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorResponse.class)))
+            @ApiResponse(responseCode = "404", description = "Lugar no encontrado")
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, String>> eliminar(
