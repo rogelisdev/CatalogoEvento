@@ -2,7 +2,7 @@ package com.codeup.catalogoDeEventos.controller;
 
 import com.codeup.catalogoDeEventos.advice.ResourceNotFoundException;
 import com.codeup.catalogoDeEventos.domain.Evento;
-
+import com.codeup.catalogoDeEventos.dto.EventoDetalleResponse;
 import com.codeup.catalogoDeEventos.dto.EventoRequest;
 import com.codeup.catalogoDeEventos.service.EventoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,139 +25,120 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 @RestController
-@RequestMapping("/api/eventos")
+@RequestMapping("/api/evento")
 @AllArgsConstructor
-@Tag(name = "Evento", description = "API para gestion de eventos")
+@Tag(name = "Evento", description = "API para gestión de eventos")
 public class EventoController {
+
     private final EventoService service;
 
+    // ----------------------------- LISTAR TODOS -----------------------------
     @Operation(summary = "Obtener todos los eventos", description = "Retorna todos los eventos registrados")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",
-            description = "Lista de eventos obtenidos exitosamente",
-            content = @Content(
-                    mediaType = "application/json",
-                    array = @ArraySchema(schema = @Schema(implementation = Evento.class))
-            ))
+            @ApiResponse(responseCode = "200", description = "Lista de eventos obtenidos exitosamente",
+                    content = @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = Evento.class))))
     })
     @GetMapping
-    public ResponseEntity<List<Evento>> listarTodo(){
+    public ResponseEntity<List<Evento>> listarTodo() {
         List<Evento> response = service.listarTodos();
         return ResponseEntity.ok(response);
     }
 
-    @Operation(summary = "Obtener evento por id", description = "Retorna el evento con el ID registrado")
+    // ----------------------------- BUSCAR POR ID -----------------------------
+    @Operation(summary = "Obtener evento por ID", description = "Retorna el evento con el ID especificado")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",
-                    description = "Evento obtenido exitosamente",
-                    content = @Content(
-                            mediaType = "application/json",
-                            // CORRECCIÓN 1: El esquema 200 debe ser Evento.class
+            @ApiResponse(responseCode = "200", description = "Evento obtenido exitosamente",
+                    content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Evento.class),
                             examples = @ExampleObject(
-                                    // CORRECCIÓN 2: Formato JSON válido y sin array
-                                    value = "{\"id\": 1, \"nombre\": \"Conoce la casa del pollo\", \"description\": \"Gran pollo humano\", \"fecha\": \"2025-12-15T20:00:00\", \"capacidad\": 100, \"idLugar\": 1, \"precio\": 1000.0}"
-                            )
-                    )),
-            @ApiResponse(responseCode = "404",
-                    description = "Evento no encontrado",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorResponse.class),
+                                    value = "{\"id\":1, \"nombre\":\"Festival de Música\", \"descripcion\":\"Evento musical anual\", \"fecha\":\"2025-12-15T20:00:00\", \"capacidad\":100, \"idLugar\":1, \"precio\":50000.0}"
+                            ))),
+            @ApiResponse(responseCode = "404", description = "Evento no encontrado",
+                    content = @Content(mediaType = "application/json",
                             examples = @ExampleObject(
-                                    // Este ejemplo JSON está correcto para un 404
-                                    value = "{\"timestamp\": \"2025-20-28T20:00:00\", \"status\": 404, \"error\": \"Not Found\", \"message\": \"Evento con el ID 100 no encontrado\", \"path\": \"/api/evento/100\"}"
-                            )
-                    )
-            )
+                                    value = "{\"mensaje\":\"Evento con ID 100 no encontrado\"}"
+                            )))
     })
     @GetMapping("/{id}")
-    public ResponseEntity<Evento> obtenerPorID(@Parameter(description = "Id del evento a buscar", example = "1", required = true) @PathVariable long id){
-        // La lógica de negocio es correcta: Optional.map().orElseThrow()
+    public ResponseEntity<Evento> obtenerPorID(
+            @Parameter(description = "ID del evento a buscar", example = "1") @PathVariable long id) {
+
         return service.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElseThrow(() -> new ResourceNotFoundException("Evento", id));
     }
-    @Operation(summary = "Agregar evento", description = "Agrega un nuevo evento al catálogo")
+
+    // ----------------------------- DETALLE EVENTO + LUGAR -----------------------------
+    @Operation(summary = "Obtener evento con detalles del lugar", description = "Retorna un evento con la información completa de su lugar asociado")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Evento encontrado con detalles"),
+            @ApiResponse(responseCode = "404", description = "Evento o lugar asociado no encontrado")
+    })
+    @GetMapping("/{id}/detalle")
+    public ResponseEntity<EventoDetalleResponse> obtenerDetallePorId(@PathVariable long id) {
+        return service.buscarDetallePorId(id)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new ResourceNotFoundException("Evento o lugar asociado", id));
+    }
+
+    // ----------------------------- CREAR EVENTO -----------------------------
+    @Operation(summary = "Agregar un nuevo evento", description = "Crea un evento y lo registra en la base de datos")
     @ApiResponses(value = {
-            // 1. Respuesta de éxito cambiada a 201 Created
-            @ApiResponse(responseCode = "201",
-                    description = "Evento creado exitosamente",
-                    content = @Content(
-                            mediaType = "application/json",
+            @ApiResponse(responseCode = "201", description = "Evento creado exitosamente",
+                    content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = Evento.class),
-                            // 2. JSON corregido y válido, usando el EventoResponse si aplica
-                            examples = @ExampleObject(value = "{\"id\": 1, \"nombre\": \"Conoce la casa del pollo\", \"descripcion\": \"Gran pollo humano\", \"fecha\": \"2025-12-15T20:00:00\", \"capacidad\": 100, \"idLugar\": 1, \"precio\": 1000.0}")
-                    )),
-            // 3. Añadido el 400 Bad Request
-            @ApiResponse(responseCode = "400",
-                    description = "Datos de entrada inválidos (ej. 'nombre' vacío)",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorResponse.class)
-                    )
-            )
-            // 4. Se eliminó el 404 innecesario
+                            examples = @ExampleObject(
+                                    value = "{\"id\":1, \"nombre\":\"Festival de Música\", \"descripcion\":\"Evento musical anual\", \"fecha\":\"2025-12-15T20:00:00\", \"capacidad\":100, \"idLugar\":1, \"precio\":50000.0}"
+                            ))),
+            @ApiResponse(responseCode = "400", description = "Datos inválidos")
     })
     @PostMapping
-    public ResponseEntity<Evento> agregar(
+    public ResponseEntity<Map<String, Object>> agregar(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Datos del evento a crear",
                     required = true,
-                    content = @Content(
-                            schema = @Schema(implementation = EventoRequest.class), // Usar DTO
+                    content = @Content(schema = @Schema(implementation = EventoRequest.class),
                             examples = @ExampleObject(
-                                    // Cuerpo de request sin ID
-                                    value = "{\"nombre\": \"Conoce la casa del pollo\", \"descripcion\": \"Gran pollo humano\", \"fecha\": \"2025-12-15T20:00:00\", \"capacidad\": 100, \"idLugar\": 1, \"precio\": 1000.0}"
-                            )
-                    )
-            )
-            // 5. Usar EventoRequest para recibir la solicitud
-            @Valid @RequestBody EventoRequest request){
+                                    value = "{\"nombre\":\"Festival de Música\", \"descripcion\":\"Evento musical anual\", \"fecha\":\"2025-12-15T20:00:00\", \"capacidad\":100, \"idLugar\":1, \"precio\":50000.0}"
+                            )))
+            @Valid @RequestBody EventoRequest request) {
 
-        // 6. El servicio debe aceptar EventoRequest
-        Evento crear = service.crear(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(crear);
+        Evento nuevo = service.crear(request);
+        Map<String, Object> response = new HashMap<>();
+        response.put("mensaje", "Evento creado exitosamente.");
+        response.put("evento", nuevo);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @Operation(summary = "Actualizar evento", description = "Actualizar un evento existente")
+    // ----------------------------- ACTUALIZAR EVENTO -----------------------------
+    @Operation(summary = "Actualizar evento", description = "Actualiza los datos de un evento existente")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",
-                    description = "Evento actualizado exitosamente",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = Evento.class))),
-            // Añadir documentación para 400
-            @ApiResponse(responseCode = "400",
-                    description = "Datos de entrada inválidos (ej. nombre vacío)",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorResponse.class))),
-            @ApiResponse(responseCode = "404",
-                    description = "Evento no encontrado",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorResponse.class)))
+            @ApiResponse(responseCode = "200", description = "Evento actualizado exitosamente"),
+            @ApiResponse(responseCode = "404", description = "Evento no encontrado"),
+            @ApiResponse(responseCode = "400", description = "Datos inválidos")
     })
     @PutMapping("/{id}")
-// 1. Usar EventoRequest para el DTO
-    public ResponseEntity<Evento> actualizar(
-            @Parameter(description = "Id del evento para actualizar", example = "1", required = true) @PathVariable long id,
-            @Valid @RequestBody EventoRequest request) { // <-- Se usa EventoRequest
+    public ResponseEntity<Map<String, Object>> actualizar(
+            @PathVariable long id,
+            @Valid @RequestBody EventoRequest request) {
 
-        // 2. Usar la lógica de Optional para manejar el 404 (debe coincidir con la firma del service)
-        return service.actualizar(id, request)
-                .map(ResponseEntity::ok)
-                .orElseThrow(() -> new ResourceNotFoundException("Evento", id)); // Lanza 404 si el Optional está vacío
+        Evento actualizado = service.actualizar(id, request)
+                .orElseThrow(() -> new ResourceNotFoundException("Evento", id));
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("mensaje", "Evento actualizado exitosamente.");
+        response.put("evento", actualizado);
+
+        return ResponseEntity.ok(response);
     }
 
-    @Operation(summary = "Eliminar un evento", description = "Elimina un evento existente")
+    // ----------------------------- ELIMINAR EVENTO -----------------------------
+    @Operation(summary = "Eliminar evento", description = "Elimina un evento existente por su ID")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Evento eliminado exitosamente"), // 204 No Content, no devuelve body
-            @ApiResponse(responseCode = "404", description = "Evento no encontrado",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
+            @ApiResponse(responseCode = "200", description = "Evento eliminado exitosamente"),
+            @ApiResponse(responseCode = "404", description = "Evento no encontrado")
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, String>> eliminar(@PathVariable long id) {
@@ -165,15 +146,8 @@ public class EventoController {
             throw new ResourceNotFoundException("Evento", id);
         }
 
-        // 2. Crea el cuerpo de la respuesta
-        Map<String, String> responseBody = new HashMap<>();
-        responseBody.put("mensaje", "Evento con ID " + id + " eliminado exitosamente.");
-
-        // 3. Devuelve 200 OK con el cuerpo JSON
-        return ResponseEntity.ok(responseBody);
+        Map<String, String> response = new HashMap<>();
+        response.put("mensaje", "Evento con ID " + id + " eliminado exitosamente.");
+        return ResponseEntity.ok(response);
     }
-
-
 }
-
-
