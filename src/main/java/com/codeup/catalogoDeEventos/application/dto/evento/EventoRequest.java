@@ -1,4 +1,4 @@
-package com.codeup.catalogoDeEventos.dto;
+package com.codeup.catalogoDeEventos.application.dto.evento;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -8,7 +8,6 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Getter

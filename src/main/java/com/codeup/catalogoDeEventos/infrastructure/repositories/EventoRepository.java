@@ -1,6 +1,6 @@
-package com.codeup.catalogoDeEventos.repository;
+package com.codeup.catalogoDeEventos.infrastructure.repositories;
 
-import com.codeup.catalogoDeEventos.domain.EventoEntity;
+import com.codeup.catalogoDeEventos.infrastructure.entities.EventoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;

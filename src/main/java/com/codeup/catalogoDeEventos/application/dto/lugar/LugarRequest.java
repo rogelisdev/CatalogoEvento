@@ -1,4 +1,4 @@
-package com.codeup.catalogoDeEventos.dto;
+package com.codeup.catalogoDeEventos.application.dto.lugar;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;

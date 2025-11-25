@@ -1,4 +1,4 @@
-package com.codeup.catalogoDeEventos.domain;
+package com.codeup.catalogoDeEventos.infrastructure.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;

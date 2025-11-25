@@ -1,4 +1,4 @@
-package com.codeup.catalogoDeEventos.advice;
+package com.codeup.catalogoDeEventos.infrastructure.advice;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

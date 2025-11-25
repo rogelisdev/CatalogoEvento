@@ -1,11 +1,11 @@
-package com.codeup.catalogoDeEventos.controller;
+package com.codeup.catalogoDeEventos.infrastructure.controller;
 
-import com.codeup.catalogoDeEventos.advice.ErrorResponse;
-import com.codeup.catalogoDeEventos.advice.ResourceNotFoundException;
-import com.codeup.catalogoDeEventos.domain.EventoEntity;
-import com.codeup.catalogoDeEventos.dto.EventoDetalleResponse;
-import com.codeup.catalogoDeEventos.dto.EventoRequest;
-import com.codeup.catalogoDeEventos.service.EventoService;
+import com.codeup.catalogoDeEventos.infrastructure.advice.ErrorResponse;
+import com.codeup.catalogoDeEventos.infrastructure.advice.ResourceNotFoundException;
+import com.codeup.catalogoDeEventos.infrastructure.entities.EventoEntity;
+import com.codeup.catalogoDeEventos.application.dto.evento.EventoDetalleResponse;
+import com.codeup.catalogoDeEventos.application.dto.evento.EventoRequest;
+import com.codeup.catalogoDeEventos.application.service.EventoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;

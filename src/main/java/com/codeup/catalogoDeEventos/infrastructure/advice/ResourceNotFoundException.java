@@ -1,4 +1,4 @@
-package com.codeup.catalogoDeEventos.advice;
+package com.codeup.catalogoDeEventos.infrastructure.advice;
 
 public class ResourceNotFoundException extends RuntimeException {
     public ResourceNotFoundException(String message) {

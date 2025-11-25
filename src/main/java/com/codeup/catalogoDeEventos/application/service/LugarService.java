@@ -1,8 +1,8 @@
-package com.codeup.catalogoDeEventos.service;
+package com.codeup.catalogoDeEventos.application.service;
 
-import com.codeup.catalogoDeEventos.domain.LugarEntity;
-import com.codeup.catalogoDeEventos.dto.LugarRequest;
-import com.codeup.catalogoDeEventos.repository.LugarRepository;
+import com.codeup.catalogoDeEventos.infrastructure.entities.LugarEntity;
+import com.codeup.catalogoDeEventos.application.dto.lugar.LugarRequest;
+import com.codeup.catalogoDeEventos.infrastructure.repositories.LugarRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

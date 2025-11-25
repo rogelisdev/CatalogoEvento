@@ -1,4 +1,4 @@
-package com.codeup.catalogoDeEventos.dto;
+package com.codeup.catalogoDeEventos.application.dto.lugar;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,12 +1,12 @@
-package com.codeup.catalogoDeEventos.service;
+package com.codeup.catalogoDeEventos.application.service;
 
-import com.codeup.catalogoDeEventos.advice.ResourceNotFoundException;
-import com.codeup.catalogoDeEventos.domain.EventoEntity;
-import com.codeup.catalogoDeEventos.domain.LugarEntity;
-import com.codeup.catalogoDeEventos.dto.EventoDetalleResponse;
-import com.codeup.catalogoDeEventos.dto.EventoRequest;
-import com.codeup.catalogoDeEventos.repository.EventoRepository;
-import com.codeup.catalogoDeEventos.repository.LugarRepository;
+import com.codeup.catalogoDeEventos.infrastructure.advice.ResourceNotFoundException;
+import com.codeup.catalogoDeEventos.infrastructure.entities.EventoEntity;
+import com.codeup.catalogoDeEventos.infrastructure.entities.LugarEntity;
+import com.codeup.catalogoDeEventos.application.dto.evento.EventoDetalleResponse;
+import com.codeup.catalogoDeEventos.application.dto.evento.EventoRequest;
+import com.codeup.catalogoDeEventos.infrastructure.repositories.EventoRepository;
+import com.codeup.catalogoDeEventos.infrastructure.repositories.LugarRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;

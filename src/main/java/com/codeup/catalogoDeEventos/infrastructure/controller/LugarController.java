@@ -1,15 +1,14 @@
-package com.codeup.catalogoDeEventos.controller;
+package com.codeup.catalogoDeEventos.infrastructure.controller;
 
-import com.codeup.catalogoDeEventos.advice.ErrorResponse;
-import com.codeup.catalogoDeEventos.advice.ResourceNotFoundException;
-import com.codeup.catalogoDeEventos.domain.LugarEntity;
-import com.codeup.catalogoDeEventos.dto.LugarRequest;
-import com.codeup.catalogoDeEventos.service.LugarService;
+import com.codeup.catalogoDeEventos.infrastructure.advice.ErrorResponse;
+import com.codeup.catalogoDeEventos.infrastructure.advice.ResourceNotFoundException;
+import com.codeup.catalogoDeEventos.infrastructure.entities.LugarEntity;
+import com.codeup.catalogoDeEventos.application.dto.lugar.LugarRequest;
+import com.codeup.catalogoDeEventos.application.service.LugarService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
