@@ -1,4 +1,4 @@
-package com.codeup.catalogoDeEventos.infrastructure.advice;
+package com.codeup.catalogoDeEventos.infrastructure.controller.advice;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

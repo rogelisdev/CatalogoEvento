@@ -1,7 +1,7 @@
 package com.codeup.catalogoDeEventos.infrastructure.controller;
 
-import com.codeup.catalogoDeEventos.infrastructure.advice.ErrorResponse;
-import com.codeup.catalogoDeEventos.infrastructure.advice.ResourceNotFoundException;
+import com.codeup.catalogoDeEventos.infrastructure.controller.advice.ErrorResponse;
+import com.codeup.catalogoDeEventos.domain.exceptions.ResourceNotFoundException;
 import com.codeup.catalogoDeEventos.infrastructure.entities.LugarEntity;
 import com.codeup.catalogoDeEventos.application.dto.lugar.LugarRequest;
 import com.codeup.catalogoDeEventos.application.service.LugarService;

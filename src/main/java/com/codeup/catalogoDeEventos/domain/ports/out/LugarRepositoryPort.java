@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface LugarRepositoryPort {
     Lugar crear(Lugar lugar);
-    Optional<Lugar> actualizar(Long id, Lugar lugar);
+    Optional<Lugar> actualizar(Lugar lugar);
     boolean eliminar(Long id);
     List<Lugar> obtenerLugares();
     Optional<Lugar> obtenerPorId(Long id);

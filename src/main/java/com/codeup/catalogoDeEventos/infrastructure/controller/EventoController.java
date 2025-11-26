@@ -1,7 +1,7 @@
 package com.codeup.catalogoDeEventos.infrastructure.controller;
 
-import com.codeup.catalogoDeEventos.infrastructure.advice.ErrorResponse;
-import com.codeup.catalogoDeEventos.infrastructure.advice.ResourceNotFoundException;
+import com.codeup.catalogoDeEventos.infrastructure.controller.advice.ErrorResponse;
+import com.codeup.catalogoDeEventos.domain.exceptions.ResourceNotFoundException;
 import com.codeup.catalogoDeEventos.infrastructure.entities.EventoEntity;
 import com.codeup.catalogoDeEventos.application.dto.evento.EventoDetalleResponse;
 import com.codeup.catalogoDeEventos.application.dto.evento.EventoRequest;
@@ -59,11 +59,10 @@ public class EventoController {
                             examples = @ExampleObject(value = "{\"nombre\": \"Concierto de Rock\", \"categoria\": \"Música\", \"fecha\": \"2025-11-20\", \"precio\": 250.0, \"lugarId\": 2}")))
             @Valid @RequestBody EventoRequest request) {
 
-        EventoEntity nuevo = eventoService.crear(request);
+        EventoEntity nuevo; //REVISAR ESTO
 
         Map<String, Object> response = new HashMap<>();
         response.put("mensaje", "Evento creado exitosamente");
-        response.put("evento", nuevo);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -85,8 +84,8 @@ public class EventoController {
             @Parameter(description = "Filtrar por fecha de inicio (YYYY-MM-DD)", example = "2025-11-01") @RequestParam(required = false) String fechaInicio,
             Pageable pageable) {
 
-        Page<EventoEntity> eventos = eventoService.listarEventos(ciudad, categoria, fechaInicio, pageable);
-        return ResponseEntity.ok(eventos);
+        Page<EventoEntity> eventos; //REVISAR
+        return null; //revisar
     }
 
     // ======================================================
@@ -109,9 +108,8 @@ public class EventoController {
             @Parameter(description = "ID del evento a consultar", example = "1", required = true)
             @PathVariable Long id) {
 
-        Optional<EventoDetalleResponse> detalle = eventoService.buscarDetallePorId(id);
-        return detalle.map(ResponseEntity::ok)
-                .orElseThrow(() -> new ResourceNotFoundException("Evento", id));
+        Optional<EventoDetalleResponse> detalle; //revisar
+        return null; //revisar
     }
 
     // ======================================================
@@ -133,17 +131,12 @@ public class EventoController {
             @PathVariable Long id,
             @Valid @RequestBody EventoRequest request) {
 
-        Optional<EventoEntity> actualizado = eventoService.actualizar(id, request);
+        Optional<EventoEntity> actualizado; //Revisar
 
-        if (actualizado.isEmpty()) {
-            throw new ResourceNotFoundException("Evento", id);
-        }
+       //condicional
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("mensaje", "Evento actualizado exitosamente");
-        response.put("evento", actualizado.get());
 
-        return ResponseEntity.ok(response);
+    return null; //REVISAR   //agregar operaiccon
     }
 
     // ======================================================
@@ -162,10 +155,8 @@ public class EventoController {
             @Parameter(description = "ID del evento a eliminar", example = "1", required = true)
             @PathVariable Long id) {
 
-        boolean eliminado = eventoService.eliminar(id);
-        if (!eliminado) {
-            throw new ResourceNotFoundException("Evento", id);
-        }
+        boolean eliminado; //Revisar
+       // condicional
 
         Map<String, String> response = new HashMap<>();
         response.put("mensaje", "Evento con ID " + id + " eliminado exitosamente.");

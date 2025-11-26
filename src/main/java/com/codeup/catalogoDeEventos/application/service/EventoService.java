@@ -1,24 +1,56 @@
 package com.codeup.catalogoDeEventos.application.service;
 
-import com.codeup.catalogoDeEventos.infrastructure.advice.ResourceNotFoundException;
-import com.codeup.catalogoDeEventos.infrastructure.entities.EventoEntity;
-import com.codeup.catalogoDeEventos.infrastructure.entities.LugarEntity;
-import com.codeup.catalogoDeEventos.application.dto.evento.EventoDetalleResponse;
-import com.codeup.catalogoDeEventos.application.dto.evento.EventoRequest;
-import com.codeup.catalogoDeEventos.infrastructure.repositories.EventoRepository;
-import com.codeup.catalogoDeEventos.infrastructure.repositories.LugarRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.*;
+import com.codeup.catalogoDeEventos.domain.models.Evento;
+import com.codeup.catalogoDeEventos.domain.ports.in.evento.ActualizarEventoUseCase;
+import com.codeup.catalogoDeEventos.domain.ports.in.evento.CrearEventoUseCase;
+import com.codeup.catalogoDeEventos.domain.ports.in.evento.EliminarEventoUseCase;
+import com.codeup.catalogoDeEventos.domain.ports.in.evento.ObtenerEventoUseCase;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
-public class EventoService {
+public class EventoService implements CrearEventoUseCase, ActualizarEventoUseCase, EliminarEventoUseCase, ObtenerEventoUseCase {
 
-    private final EventoRepository eventRepository;
+    private final CrearEventoUseCase crear;
+    private final ActualizarEventoUseCase actualizar;
+    private final EliminarEventoUseCase eliminar;
+    private final ObtenerEventoUseCase obtener;
+
+    public EventoService(CrearEventoUseCase crear, ActualizarEventoUseCase actualizar, EliminarEventoUseCase eliminar, ObtenerEventoUseCase obtener) {
+        this.crear = crear;
+        this.actualizar = actualizar;
+        this.eliminar = eliminar;
+        this.obtener = obtener;
+    }
+
+    @Override
+    public Optional<Evento> actualizarEvento(Long id, Evento evento) {
+        return actualizar.actualizarEvento(id, evento);
+    }
+
+    @Override
+    public Evento crearEvento(Evento evento) {
+        return crear.crearEvento(evento);
+    }
+
+    @Override
+    public boolean eliminarEvento(Long id) {
+        return eliminar.eliminarEvento(id);
+    }
+
+    @Override
+    public Optional<Evento> obtenerEventoPorId(Long id) {
+        return obtener.obtenerEventoPorId(id);
+    }
+
+    @Override
+    public List<Evento> obtenerEventos() {
+        return obtener.obtenerEventos();
+    }
+}
+    /*private final EventoRepository eventRepository;
     private final LugarRepository venueRepository;
 
     public Page<EventoEntity> listarEventos(String ciudad, String categoria, String fechaInicio, Pageable pageable) {
@@ -93,4 +125,5 @@ public class EventoService {
                             .build();
                 });
     }
-}
+} */
+

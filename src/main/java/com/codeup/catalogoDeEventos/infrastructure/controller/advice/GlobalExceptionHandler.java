@@ -1,5 +1,6 @@
-package com.codeup.catalogoDeEventos.infrastructure.advice;
+package com.codeup.catalogoDeEventos.infrastructure.controller.advice;
 
+import com.codeup.catalogoDeEventos.domain.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
