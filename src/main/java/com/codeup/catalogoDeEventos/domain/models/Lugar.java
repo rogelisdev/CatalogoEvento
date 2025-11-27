@@ -8,7 +8,7 @@ public class Lugar {
     private String pais;
     private int cantidad;
 
-    public Lugar( String nombre, String ciudad, String direccion, String pais, int cantidad) {
+    public Lugar(Long id, String nombre, String ciudad, String direccion, String pais, int cantidad) {
         this.id = id;
         this.nombre = nombre;
         this.ciudad = ciudad;

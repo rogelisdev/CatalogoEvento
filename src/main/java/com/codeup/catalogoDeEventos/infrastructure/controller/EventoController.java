@@ -1,5 +1,6 @@
 package com.codeup.catalogoDeEventos.infrastructure.controller;
 
+import com.codeup.catalogoDeEventos.domain.models.Evento;
 import com.codeup.catalogoDeEventos.infrastructure.controller.advice.ErrorResponse;
 import com.codeup.catalogoDeEventos.domain.exceptions.ResourceNotFoundException;
 import com.codeup.catalogoDeEventos.infrastructure.entities.EventoEntity;
@@ -51,22 +52,23 @@ public class EventoController {
                             schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping
-    public ResponseEntity<Map<String, Object>> crearEvento(
+    public ResponseEntity<Evento> crearEvento(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Datos del evento a registrar",
                     required = true,
                     content = @Content(schema = @Schema(implementation = EventoRequest.class),
-                            examples = @ExampleObject(value = "{\"nombre\": \"Concierto de Rock\", \"categoria\": \"Música\", \"fecha\": \"2025-11-20\", \"precio\": 250.0, \"lugarId\": 2}")))
-            @Valid @RequestBody EventoRequest request) {
+                            examples = @ExampleObject(value = "{\"nombre\": \"Concierto de Rock\", \"categoria\": \"Música\", \"fecha\": \"2025-11-20\", \"precio\": 250.0, \"lugarId\": 2}"
+                            ))) @Valid @RequestBody Evento evento) {
 
-        EventoEntity nuevo; //REVISAR ESTO
-
+        Evento create = eventoService.crearEvento(evento);
         Map<String, Object> response = new HashMap<>();
         response.put("mensaje", "Evento creado exitosamente");
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
+        return new ResponseEntity<>(create, HttpStatus.CREATED);
+        }
 
+    }
+/*
     // ======================================================
     // 2. LISTAR EVENTOS (CON PAGINACIÓN Y FILTROS)
     // ======================================================
@@ -164,3 +166,4 @@ public class EventoController {
         return ResponseEntity.ok(response);
     }
 }
+*/

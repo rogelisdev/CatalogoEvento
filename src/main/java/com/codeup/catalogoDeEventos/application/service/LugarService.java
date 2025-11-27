@@ -5,10 +5,6 @@ import com.codeup.catalogoDeEventos.domain.ports.in.lugar.ActualizarLugarUseCase
 import com.codeup.catalogoDeEventos.domain.ports.in.lugar.CrearLugarUseCase;
 import com.codeup.catalogoDeEventos.domain.ports.in.lugar.EliminarLugarUseCase;
 import com.codeup.catalogoDeEventos.domain.ports.in.lugar.ObtenerLugarUseCase;
-import com.codeup.catalogoDeEventos.infrastructure.entities.LugarEntity;
-import com.codeup.catalogoDeEventos.application.dto.lugar.LugarRequest;
-import com.codeup.catalogoDeEventos.infrastructure.repositories.LugarRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

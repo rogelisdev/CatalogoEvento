@@ -28,8 +28,8 @@ import java.util.Map;
 @AllArgsConstructor
 @Tag(name = "Lugar", description = "API para gestión de lugares o venues")
 public class LugarController {
-
-    private final LugarService service;
+}
+    /*private final LugarService service;
 
     // ======================================================
     // 1. LISTAR TODOS
@@ -139,4 +139,4 @@ public class LugarController {
 
         return ResponseEntity.ok(responseBody);
     }
-}
+}*/

@@ -8,6 +8,5 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface EventoRepository extends JpaRepository<EventoEntity, Long>, JpaSpecificationExecutor<EventoEntity> {
-    Optional<EventoEntity> findByNombre(String nombre);
+public interface JpaEventoRepository extends JpaRepository<EventoEntity, Long> {
 }
