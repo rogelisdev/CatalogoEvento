@@ -16,7 +16,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Object> handleResourceNotFoundException(ResourceNotFoundException ex) {
         Map<String, Object> body = new HashMap<>();
-        body.put("mensaje", "Recurso no encontrado: " + ex.getMessage());
+        body.put("message", "Resource not found: " + ex.getMessage());
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND); // 404
     }
 

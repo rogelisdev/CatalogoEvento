@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class LugarRespose {
+public class VenueRespose {
 
     private long id;
     private String nombre;

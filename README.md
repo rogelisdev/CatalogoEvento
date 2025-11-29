@@ -19,7 +19,7 @@ Construir la **primera versión del catálogo de la tiquetera online**, permitie
 ```bash
 src/main/java/com/codeup/catalogoDeEventos/
 ├── controller/
-│   ├── EventoController.java
+│   ├── EventController.java
 │   └── LugarController.java
 ├── domain/
 │   ├── Evento.java
@@ -50,21 +50,21 @@ src/main/java/com/codeup/catalogoDeEventos/
 | `POST`   | `/api/evento`          | Crear evento                    |
 | `GET`    | `/api/evento`          | Listar todos los eventos        |
 | `GET`    | `/api/evento/{id}`     | Obtener evento por ID           |
-| `GET`    | `/api/evento/{id}/detalle` | Detalle con info del lugar |
+| `GET`    | `/api/evento/{id}/detalle` | Detalle con info del venue |
 | `PUT`    | `/api/evento/{id}`     | Actualizar evento               |
 | `DELETE` | `/api/evento/{id}`     | Eliminar evento                 |
 
 ---
 
-### Lugares / Venues (`/api/lugar`)
+### Lugares / Venues (`/api/venue`)
 
 | Método | Endpoint             | Descripción                     |
 |--------|----------------------|---------------------------------|
-| `POST`   | `/api/lugar`           | Crear lugar                     |
-| `GET`    | `/api/lugar`           | Listar todos los lugares        |
-| `GET`    | `/api/lugar/{id}`      | Obtener lugar por ID            |
-| `PUT`    | `/api/lugar/{id}`      | Actualizar lugar                |
-| `DELETE` | `/api/lugar/{id}`      | Eliminar lugar                  |
+| `POST`   | `/api/venue`           | Crear venue                     |
+| `GET`    | `/api/venue`           | Listar todos los lugares        |
+| `GET`    | `/api/venue/{id}`      | Obtener venue por ID            |
+| `PUT`    | `/api/venue/{id}`      | Actualizar venue                |
+| `DELETE` | `/api/venue/{id}`      | Eliminar venue                  |
 
 ---
 
