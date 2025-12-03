@@ -15,6 +15,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -30,12 +31,14 @@ public class EventController {
         // ======================================================
         // 1. CREATE EVENT
         // ======================================================
-        @Operation(summary = "Create a new event", description = "Registers a new event with basic information and associated venue.")
+        @Operation(summary = "Create a new event", description = "Registers a new event with basic information and associated venue. Only ADMIN users can create events.")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "201", description = "Event created successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Event.class), examples = @ExampleObject(value = "{\"id\": 1, \"name\": \"Rock Concert\", \"description\": \"International rock show\", \"date\": \"2025-11-20T20:00:00\", \"price\": 250.0}"))),
-                        @ApiResponse(responseCode = "400", description = "Invalid request body", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
+                        @ApiResponse(responseCode = "400", description = "Invalid request body", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+                        @ApiResponse(responseCode = "403", description = "Forbidden - only ADMIN users can create events")
         })
         @PostMapping
+        @PreAuthorize("hasRole('ADMIN')")
         public ResponseEntity<Event> createEvent(
                         @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Event data to register", required = true, content = @Content(schema = @Schema(implementation = EventRequest.class), examples = @ExampleObject(value = "{\"name\": \"Rock Concert\", \"description\": \"International rock show\", \"date\": \"2025-11-20T20:00:00\", \"price\": 250.0, \"venueId\": 2}"))) @Valid @RequestBody EventRequest request) {
 
@@ -47,12 +50,14 @@ public class EventController {
         // ======================================================
         // 2. DELETE EVENT
         // ======================================================
-        @Operation(summary = "Delete event by ID", description = "Deletes an existing event by its unique identifier.")
+        @Operation(summary = "Delete event by ID", description = "Deletes an existing event by its unique identifier. Only ADMIN users can delete events.")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "204", description = "Event deleted successfully"),
-                        @ApiResponse(responseCode = "404", description = "Event not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
+                        @ApiResponse(responseCode = "404", description = "Event not found", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+                        @ApiResponse(responseCode = "403", description = "Forbidden - only ADMIN users can delete events")
         })
         @DeleteMapping("/{id}")
+        @PreAuthorize("hasRole('ADMIN')")
         public ResponseEntity<Map<String, String>> deleteEvent(
                         @PathVariable Long id) {
 
