@@ -38,7 +38,7 @@ public class VenueService implements
 
 
     @Override
-    public Venue create(Venue venue) {
+    public Venue create(@Valid VenueRequest venue) {
         return createVenueUseCase.create(venue);
     }
 

@@ -1,6 +1,5 @@
 package com.codeup.catalogoDeEventos.infrastructure.adapters;
 
-import com.codeup.catalogoDeEventos.application.dto.venue.VenueRequest;
 import com.codeup.catalogoDeEventos.domain.models.Venue;
 import com.codeup.catalogoDeEventos.domain.ports.out.VenueRepositoryPort;
 import com.codeup.catalogoDeEventos.infrastructure.entities.VenueEntity;
@@ -21,7 +20,7 @@ public class JpaVenueRepositoryAdapter implements VenueRepositoryPort {
 
     @Override
     public Venue create(@Valid Venue venue) {
-             VenueEntity entity = VenueEntity.fromDomainModel(venue);
+        VenueEntity entity = VenueEntity.fromDomainModel(venue);
         VenueEntity savedEntity = jpaVenueRepository.save(entity);
         return savedEntity.toDomainModel();
     }

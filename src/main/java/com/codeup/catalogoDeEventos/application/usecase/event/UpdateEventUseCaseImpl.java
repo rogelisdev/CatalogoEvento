@@ -14,18 +14,17 @@ public class UpdateEventUseCaseImpl implements UpdateEventUseCase {
         this.eventRepository = eventRepository;
     }
 
-
     @Override
     public Optional<Event> update(Long id, Event updatedEvent) {
         return eventRepository.findById(id)
-                .map(existing -> {
+                .flatMap(existing -> {
                     existing.setName(updatedEvent.getName());
                     existing.setDescription(updatedEvent.getDescription());
                     existing.setDate(updatedEvent.getDate());
                     existing.setCapacity(updatedEvent.getCapacity());
                     existing.setPrice(updatedEvent.getPrice());
 
-                    return eventRepository.create(existing);
+                    return eventRepository.update(existing);
                 });
     }
 }

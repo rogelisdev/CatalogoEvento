@@ -1,18 +1,13 @@
 package com.codeup.catalogoDeEventos.infrastructure.entities;
 
-import com.codeup.catalogoDeEventos.application.dto.venue.VenueRequest;
 import com.codeup.catalogoDeEventos.domain.models.Venue;
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import lombok.*;
 
 import java.util.List;
 
 @Entity
-@Table(
-        name = "venues",
-        uniqueConstraints = @UniqueConstraint(columnNames = "name")
-)
+@Table(name = "venues", uniqueConstraints = @UniqueConstraint(columnNames = "name"))
 @Getter
 @Setter
 @NoArgsConstructor
@@ -49,12 +44,10 @@ public class VenueEntity {
                 venue.getCity(),
                 venue.getAddress(),
                 venue.getCountry(),
-                venue.getCapacity()
-        );
+                venue.getCapacity());
         entity.setId(venue.getId()); // solo asigna ID si existe
         return entity;
     }
-
 
     // Mapper to Domain Model
     public Venue toDomainModel() {
@@ -64,7 +57,6 @@ public class VenueEntity {
                 city,
                 address,
                 country,
-                capacity
-        );
+                capacity);
     }
 }

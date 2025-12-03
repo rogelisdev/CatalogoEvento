@@ -6,5 +6,5 @@ import jakarta.validation.Valid;
 
 public interface CreateVenueUseCase {
 
-    Venue create(Venue venue);
+    Venue create(@Valid VenueRequest venue);
 }

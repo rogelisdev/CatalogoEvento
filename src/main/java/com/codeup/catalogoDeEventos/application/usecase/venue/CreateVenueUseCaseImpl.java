@@ -14,9 +14,15 @@ public class CreateVenueUseCaseImpl implements CreateVenueUseCase {
         this.venueRepository = venueRepository;
     }
 
-
     @Override
-    public Venue create(Venue venue) {
-        return venueRepository.create(venue);
+    public Venue create(@Valid VenueRequest venue) {
+        Venue domainVenue = new Venue(
+                null,
+                venue.getName(),
+                venue.getCity(),
+                venue.getAddress(),
+                venue.getCountry(),
+                venue.getCapacity());
+        return venueRepository.create(domainVenue);
     }
 }

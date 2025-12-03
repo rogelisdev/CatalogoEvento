@@ -1,11 +1,12 @@
 package com.codeup.catalogoDeEventos.infrastructure.adapters;
 
+import com.codeup.catalogoDeEventos.application.dto.event.EventRequest;
 import com.codeup.catalogoDeEventos.domain.models.Event;
-import com.codeup.catalogoDeEventos.domain.models.Venue;
 import com.codeup.catalogoDeEventos.domain.ports.out.EventRepositoryPort;
 import com.codeup.catalogoDeEventos.infrastructure.entities.EventEntity;
 import com.codeup.catalogoDeEventos.infrastructure.entities.VenueEntity;
 import com.codeup.catalogoDeEventos.infrastructure.repositories.JpaEventRepository;
+import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,11 +21,20 @@ public class JpaEventRepositoryAdapter implements EventRepositoryPort {
     }
 
     @Override
-    public Event create(Event event) {
+    public Event create(@Valid EventRequest event) {
         VenueEntity venueEntity = new VenueEntity(); // You should fetch it from DB
-        // Example: venueEntity = venueRepository.findById(event.getVenue().getId()).orElseThrow(...);
+        // Example: venueEntity =
+        // venueRepository.findById(event.getVenue().getId()).orElseThrow(...);
 
-        EventEntity entity = EventEntity.fromDomainModel(event, venueEntity);
+        Event domainEvent = new Event(
+                null, // ID is null for new events
+                event.getName(),
+                event.getDescription(),
+                event.getDate(),
+                event.getCapacity(),
+                event.getPrice());
+
+        EventEntity entity = EventEntity.fromDomainModel(domainEvent, venueEntity);
         EventEntity saved = repository.save(entity);
         return saved.toDomainModel();
     }
@@ -32,7 +42,8 @@ public class JpaEventRepositoryAdapter implements EventRepositoryPort {
     @Override
     public Optional<Event> update(Event event) {
         VenueEntity venueEntity = new VenueEntity(); // You should fetch it from DB
-        // Example: venueEntity = venueRepository.findById(event.getVenue().getId()).orElseThrow(...);
+        // Example: venueEntity =
+        // venueRepository.findById(event.getVenue().getId()).orElseThrow(...);
 
         EventEntity entity = EventEntity.fromDomainModel(event, venueEntity);
         EventEntity saved = repository.save(entity); // save acts as insert/update

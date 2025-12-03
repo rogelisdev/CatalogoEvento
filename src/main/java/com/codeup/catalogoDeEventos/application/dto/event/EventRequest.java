@@ -13,27 +13,27 @@ public class EventRequest {
 
     @NotBlank(message = "Name is required")
     @Size(min = 3, max = 30, message = "The name must contain between 3 and 30 characters")
-    @Schema(description = "The name of the event", example = "Fest Chicken", required = true)
+    @Schema(description = "The name of the event", example = "Fest Chicken", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
     @NotBlank(message = "Description is required")
     @Size(min = 3, max = 40, message = "The description must contain between 3 and 40 characters")
-    @Schema(description = "Event description", example = "Come meet the human chicken", required = true)
+    @Schema(description = "Event description", example = "Come meet the human chicken", requiredMode = Schema.RequiredMode.REQUIRED)
     private String description;
 
     @NotNull(message = "Date is required")
-    @Schema(description = "Event date and time", example = "2025-10-28T21:00:00", required = true)
+    @Schema(description = "Event date and time", example = "2025-10-28T21:00:00", requiredMode = Schema.RequiredMode.REQUIRED)
     private LocalDateTime date;
 
     @Positive(message = "Capacity must be greater than 0")
-    @Schema(description = "Maximum event capacity", example = "1000", required = true)
+    @Schema(description = "Maximum event capacity", example = "1000", requiredMode = Schema.RequiredMode.REQUIRED)
     private int capacity;
 
     @Positive(message = "Place ID must be greater than 0")
-    @Schema(description = "ID of the event place", example = "1", required = true)
+    @Schema(description = "ID of the event place", example = "1", requiredMode = Schema.RequiredMode.REQUIRED)
     private long placeId;
 
     @Positive(message = "Price must be greater than 0")
-    @Schema(description = "Ticket price", example = "100", required = true)
+    @Schema(description = "Ticket price", example = "100", requiredMode = Schema.RequiredMode.REQUIRED)
     private double price;
 }
