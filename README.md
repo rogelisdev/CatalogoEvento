@@ -1,209 +1,96 @@
-# **Catálogo de Eventos - Tiquetera Online (v1.0)**  
-*Primera versión funcional con API REST, arquitectura por capas, almacenamiento en memoria y documentación OpenAPI*
+# 🎟️ Online Ticket Catalog API - Core V1 (In-Memory)
+
+This repository contains the initial version of an online ticketing catalog API. This core version is built as a **RESTful service** using **Spring Boot**, implementing a layered architecture (Controller, Service, Repository simulation), and utilizing **in-memory storage** (Java's `List<>`) instead of a persistent database.
 
 ---
 
-## Objetivo de la Historia de Usuario (HU)
+## 🎯 Project Objective
 
-Construir la **primera versión del catálogo de la tiquetera online**, permitiendo **gestionar Eventos y Lugares (Venues)** desde una **API REST**, aplicando:
-
-- Arquitectura por capas  
-- Almacenamiento en memoria temporal  
-- Documentación OpenAPI (Swagger UI)  
-- Validaciones y manejo de códigos HTTP
+The main goal of this project is to build the first functional iteration of the online ticket catalog, enabling the management of **Events** and **Venues** through a REST API. This task focuses on establishing the architectural foundations, implementing the complete CRUD operations, and setting up API documentation using OpenAPI/Swagger.
 
 ---
 
-## Estructura del Proyecto (Arquitectura por Capas)
+## 🏗️ Architecture and Features
 
-```bash
-src/main/java/com/codeup/catalogoDeEventos/
-├── controller/
-│   ├── EventoController.java
-│   └── LugarController.java
-├── domain/
-│   ├── Evento.java
-│   └── Lugar.java
-├── dto/
-│   ├── EventoRequest.java
-│   ├── EventoDetalleResponse.java
-│   └── LugarRequest.java
-├── service/
-│   ├── EventoService.java
-│   └── LugarService.java
-├── advice/
-│   ├── ResourceNotFoundException.java
-│   └── ErrorResponse.java
-└── CatalogoDeEventosApplication.java
-```
+The application follows a standard **layered architecture** and was developed with the following structure:
 
-> **Nota**: No se usa `repository` aún → se simula con `List<T>` en los servicios.
+* **Controller Layer:** Handles HTTP requests and response mapping (`ResponseEntity`).
+* **Service Layer:** Contains the business logic and manages the data storage.
+* **Domain / DTO Layer:** Defines the core entities (`Event`, `Venue`) and the data transfer objects (`EventRequest`, `VenueRequest`, `DetailsEventResponse`).
+* **Data Storage:** Simulated using an in-memory `List<T>` within the service implementation.
+
+### Key Tasks Completed
+
+| Task | Description |
+| :--- | :--- |
+| **Task 1: Architecture Setup** | Established the layered structure (DTOs, Services, Controllers). Configured in-memory services with `List<>` and `AtomicLong` for ID generation. Implemented standard HTTP codes and `ResponseEntity`. |
+| **Task 2: CRUD Implementation** | Implemented the complete RESTful CRUD operations for both **Events** and **Venues**. Included minimal validation (e.g., non-empty names). |
+| **Task 3: Documentation & Errors** | Configured **OpenAPI/Swagger UI** for complete and navigable API documentation. Ensured all endpoints have descriptions and examples. Implemented basic error handling (e.g., **404 Not Found** and **400 Bad Request**). |
 
 ---
 
-## Endpoints Disponibles
+## 💻 API Endpoints
 
-### Eventos (`/api/evento`)
+The following RESTful endpoints are available for managing resources. The API base path is typically `/api/` (e.g., `/api/events`).
 
-| Método | Endpoint             | Descripción                     |
-|--------|----------------------|---------------------------------|
-| `POST`   | `/api/evento`          | Crear evento                    |
-| `GET`    | `/api/evento`          | Listar todos los eventos        |
-| `GET`    | `/api/evento/{id}`     | Obtener evento por ID           |
-| `GET`    | `/api/evento/{id}/detalle` | Detalle con info del lugar |
-| `PUT`    | `/api/evento/{id}`     | Actualizar evento               |
-| `DELETE` | `/api/evento/{id}`     | Eliminar evento                 |
-
----
-
-### Lugares / Venues (`/api/lugar`)
-
-| Método | Endpoint             | Descripción                     |
-|--------|----------------------|---------------------------------|
-| `POST`   | `/api/lugar`           | Crear lugar                     |
-| `GET`    | `/api/lugar`           | Listar todos los lugares        |
-| `GET`    | `/api/lugar/{id}`      | Obtener lugar por ID            |
-| `PUT`    | `/api/lugar/{id}`      | Actualizar lugar                |
-| `DELETE` | `/api/lugar/{id}`      | Eliminar lugar                  |
+| HTTP Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `POST` | `/events` | Creates a new Event. |
+| `GET` | `/events` | Retrieves a list of all Events. |
+| `GET` | `/events/{id}` | Retrieves details for a specific Event. |
+| `PUT` | `/events/{id}` | Updates all fields for a specific Event. |
+| `DELETE` | `/events/{id}` | Deletes a specific Event. |
+| `GET` | `/events/{id}/details` | Retrieves an Event with its associated Venue details (Simulated JOIN). |
+| `POST` | `/venues` | Creates a new Venue. |
+| `GET` | `/venues` | Retrieves a list of all Venues. |
+| `GET` | `/venues/{id}` | Retrieves details for a specific Venue. |
+| `PUT` | `/venues/{id}` | Updates all fields for a specific Venue. |
+| `DELETE` | `/venues/{id}` | Deletes a specific Venue. |
 
 ---
 
-## DTOs (Data Transfer Objects)
+## 🚀 Getting Started
 
-### `EventoRequest.java`
-```json
-{
-  "nombre": "Concierto de Rock",
-  "descripcion": "Evento musical",
-  "fecha": "2025-12-25T20:00:00",
-  "capacidad": 200,
-  "idLugar": 1,
-  "precio": 1500.0
-}
-```
+### Prerequisites
 
-### `LugarRequest.java`
-```json
-{
-  "nombre": "Teatro Municipal",
-  "direccion": "Calle Falsa 123",
-  "ciudad": "Bogotá",
-  "pais": "Colombia",
-  "capacidad": 500
-}
-```
+* Java 17+ (or equivalent version used for the project)
+* Maven or Gradle (used for dependency management)
 
----
+### Running the Application
 
-## Validaciones Implementadas
+1.  **Clone the repository:**
+    ```bash
+    git clone [Your-Repo-URL]
+    cd catalogoDeEventos
+    ```
 
-| Campo         | Validación                             |
-|---------------|----------------------------------------|
-| `nombre`      | `@NotBlank` → obligatorio y no vacío   |
-| `direccion`   | `@NotBlank` → obligatorio              |
-| `ciudad`      | `@NotBlank` → obligatorio              |
-| `pais`        | `@NotBlank` → obligatorio              |
-| `capacidad`   | `@NotNull` + `@Positive`               |
-| `fecha`       | `@NotNull` + `@FutureOrPresent`        |
-| `idLugar`     | `@NotNull`                             |
+2.  **Build the project (using Maven as example):**
+    ```bash
+    ./mvnw clean install
+    ```
 
-> **Errores 400** devuelven JSON claro con mensajes en español.
+3.  **Run the application:**
+    ```bash
+    ./mvnw spring-boot:run
+    ```
+
+### Accessing the Documentation
+
+Once the application is running (default port is 8080), you can access the OpenAPI documentation (Swagger UI) at the following URL:
+
+[http://localhost:8080/swagger-ui.html]
+
+(http://localhost:8080/swagger-ui.html)
 
 ---
 
-## Códigos HTTP Adecuados
+## ✅ Acceptance Criteria Summary
 
-| Acción       | Código HTTP | Body de Respuesta                     |
-|--------------|-------------|---------------------------------------|
-| Crear        | `201 Created` | Objeto creado                         |
-| Listar       | `200 OK`      | Lista de objetos                      |
-| Obtener      | `200 OK`      | Objeto encontrado                     |
-| Actualizar   | `200 OK`      | Objeto actualizado                    |
-| Eliminar     | `204 No Content` | Sin cuerpo                         |
-| No encontrado| `404 Not Found` | `ErrorResponse` con mensaje         |
-| Datos inválidos | `400 Bad Request` | Mapa de errores por campo        |
+The project meets the following requirements for Core V1:
 
----
-
-## Documentación OpenAPI (Swagger UI)
-
-**Acceso**:  
-`http://localhost:8080/swagger-ui.html`
-
-**Características**:
-- Descripciones claras por endpoint
-- Ejemplos de `request` y `response`
-- Modelos (`Evento`, `Lugar`, `ErrorResponse`)
-- Parámetros y códigos de estado documentados
-- Soporte para pruebas interactivas
-
----
-
-## Almacenamiento en Memoria
-
-- Datos persisten **solo durante la ejecución**
-- `List<Evento>` y `List<Lugar>` en servicios
-- IDs generados automáticamente (secuencial)
-- Ideal para pruebas y desarrollo inicial
-
----
-
-
-
-## Demostración (Cierre de Actividad)
-
-| Acción | Herramienta | Evidencia |
-|-------|-------------|---------|
-| Ejecutar API | `mvn spring-boot:run` | Servidor en `localhost:8080` |
-| Acceder a Swagger | Navegador | `swagger-ui.html` |
-| Probar CRUD | Swagger UI | Capturas de POST, GET, PUT, DELETE |
-| Ver errores | Swagger / Postman | 400 y 404 con mensajes claros |
-
----
-
-## Criterios de Aceptación (Cumplidos)
-
-| Criterio | Estado |
-|--------|--------|
-| CRUD completo sin persistencia | Completed |
-| API cumple reglas REST | Completed |
-| Swagger UI navegable y documentado | Completed |
-| Arquitectura por capas | Completed |
-| Registro en memoria durante ejecución | Completed |
-
----
-
-## Próximos Pasos (Siguientes Iteraciones)
-
-1. **Persistencia con JPA + H2/MySQL**
-2. **Relaciones bidireccionales Evento ↔ Lugar**
-3. **Búsquedas avanzadas (por fecha, ciudad, precio)**
-4. **Paginación y ordenamiento**
-5. **Seguridad (JWT, roles)**
-6. **Pruebas unitarias e integradas**
-
----
-
-## Tecnologías Usadas
-
-| Tecnología        | Versión |
-|-------------------|--------|
-| Java              | 17+    |
-| Spring Boot       | 3.2+   |
-| Springdoc OpenAPI | 2.0+   |
-| Lombok            | 1.18+  |
-| Jakarta Validation| 3.0+   |
-
----
-
-## Autor
-
-**Estudiante**:  Rogelis Garcia  
-**Fecha**: 03 de noviembre de 2025  
-
----
-
-> **¡API lista para demo y evolución!**  
-> Swagger UI: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
-
---- 
+* Complete CRUD functionality is operational (without persistence).
+* API adheres to REST principles and uses appropriate HTTP response codes (200, 201, 404, 400).
+* The project structure is clearly organized by layers (Controller-Service).
+* Data is stored and maintained in memory during the application's runtime.
+* The Swagger UI is fully configured and provides accurate, navigable documentation for all endpoints.
+````
