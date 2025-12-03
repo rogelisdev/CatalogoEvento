@@ -5,7 +5,9 @@ import com.codeup.catalogoDeEventos.domain.ports.in.event.UpdateEventUseCase;
 import com.codeup.catalogoDeEventos.domain.ports.out.EventRepositoryPort;
 
 import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public class UpdateEventUseCaseImpl implements UpdateEventUseCase {
 
     private final EventRepositoryPort eventRepository;

@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "events")
@@ -28,8 +30,12 @@ public class EventEntity {
     @JoinColumn(name = "venue_id", nullable = false)
     private VenueEntity venue;
 
+    @ManyToMany(mappedBy = "events", fetch = FetchType.LAZY)
+    private List<UserEntity> users = new ArrayList<>();
+
     // Constructor without ID (for creation)
-    public EventEntity(String name, String description, LocalDateTime date, int capacity, double price, VenueEntity venue) {
+    public EventEntity(String name, String description, LocalDateTime date, int capacity, double price,
+            VenueEntity venue) {
         this.name = name;
         this.description = description;
         this.date = date;
@@ -46,8 +52,7 @@ public class EventEntity {
                 event.getDate(),
                 event.getCapacity(),
                 event.getPrice(),
-                venueEntity
-        );
+                venueEntity);
         if (event.getId() != null) {
             entity.setId(event.getId()); // only set ID if updating
         }
@@ -62,7 +67,6 @@ public class EventEntity {
                 this.description,
                 this.date,
                 this.capacity,
-                this.price
-        );
+                this.price);
     }
 }

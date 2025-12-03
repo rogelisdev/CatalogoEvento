@@ -5,7 +5,9 @@ import com.codeup.catalogoDeEventos.domain.models.Venue;
 import com.codeup.catalogoDeEventos.domain.ports.in.venue.CreateVenueUseCase;
 import com.codeup.catalogoDeEventos.domain.ports.out.VenueRepositoryPort;
 import jakarta.validation.Valid;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public class CreateVenueUseCaseImpl implements CreateVenueUseCase {
 
     private final VenueRepositoryPort venueRepository;

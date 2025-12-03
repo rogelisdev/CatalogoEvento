@@ -6,7 +6,9 @@ import com.codeup.catalogoDeEventos.domain.ports.out.VenueRepositoryPort;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional(readOnly = true)
 public class GetVenueUseCaseImpl implements GetVenueUseCase {
 
     private final VenueRepositoryPort venueRepository;

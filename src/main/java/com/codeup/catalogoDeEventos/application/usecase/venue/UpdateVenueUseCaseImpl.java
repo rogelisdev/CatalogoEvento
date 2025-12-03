@@ -7,7 +7,9 @@ import com.codeup.catalogoDeEventos.domain.ports.out.VenueRepositoryPort;
 import jakarta.validation.Valid;
 
 import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public class UpdateVenueUseCaseImpl implements UpdateVenueUseCase {
 
     private final VenueRepositoryPort venueRepository;
@@ -15,7 +17,6 @@ public class UpdateVenueUseCaseImpl implements UpdateVenueUseCase {
     public UpdateVenueUseCaseImpl(VenueRepositoryPort venueRepository) {
         this.venueRepository = venueRepository;
     }
-
 
     @Override
     public Optional<Venue> update(Long id, @Valid VenueRequest updatedVenue) {

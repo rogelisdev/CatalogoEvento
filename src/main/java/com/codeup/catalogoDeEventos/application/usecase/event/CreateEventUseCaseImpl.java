@@ -5,7 +5,9 @@ import com.codeup.catalogoDeEventos.domain.models.Event;
 import com.codeup.catalogoDeEventos.domain.ports.in.event.CreateEventUseCase;
 import com.codeup.catalogoDeEventos.domain.ports.out.EventRepositoryPort;
 import jakarta.validation.Valid;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public class CreateEventUseCaseImpl implements CreateEventUseCase {
 
     private final EventRepositoryPort eventRepository;
@@ -13,7 +15,6 @@ public class CreateEventUseCaseImpl implements CreateEventUseCase {
     public CreateEventUseCaseImpl(EventRepositoryPort eventRepository) {
         this.eventRepository = eventRepository;
     }
-
 
     @Override
     public Event create(@Valid EventRequest event) {

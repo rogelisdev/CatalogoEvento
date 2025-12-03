@@ -6,7 +6,9 @@ import com.codeup.catalogoDeEventos.domain.ports.out.EventRepositoryPort;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional(readOnly = true)
 public class GetEventUseCaseImpl implements GetEventUseCase {
 
     private final EventRepositoryPort eventRepository;
@@ -14,7 +16,6 @@ public class GetEventUseCaseImpl implements GetEventUseCase {
     public GetEventUseCaseImpl(EventRepositoryPort eventRepository) {
         this.eventRepository = eventRepository;
     }
-
 
     @Override
     public Optional<Event> getById(Long id) {
