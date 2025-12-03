@@ -4,7 +4,7 @@ import com.codeup.catalogoDeEventos.advice.ResourceNotFoundException;
 import com.codeup.catalogoDeEventos.domain.Event;
 import com.codeup.catalogoDeEventos.dto.DetailsEventResponse;
 import com.codeup.catalogoDeEventos.dto.EventRequest;
-import com.codeup.catalogoDeEventos.service.ServiceEvent;
+import com.codeup.catalogoDeEventos.service.EventService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -30,7 +30,7 @@ import java.util.Map;
 
 public class EventController {
 
-    private final ServiceEvent service;
+    private final EventService service;
 
     // ----------------------------- LIST ALL -----------------------------
     @Operation(summary = "Get all events", description = "Returns all registered events")
@@ -77,7 +77,7 @@ public class EventController {
     })
     @GetMapping("/{id}/details")
     public ResponseEntity<DetailsEventResponse> getDetailsById(@PathVariable long id) {
-        return service.foundDetailsById(id)
+        return service.findDetailsById(id)
                 .map(ResponseEntity::ok)
                 .orElseThrow(() -> new ResourceNotFoundException("Event or associated venue", id));
     }
@@ -123,7 +123,7 @@ public class EventController {
             @PathVariable long id,
             @Valid @RequestBody EventRequest request) {
 
-        Event updated = service.updateEvent(id, request)
+        Event updated = service.update(id, request)
                 .orElseThrow(() -> new ResourceNotFoundException("Event", id));
 
         Map<String, Object> response = new HashMap<>();

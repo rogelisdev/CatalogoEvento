@@ -4,7 +4,8 @@ import com.codeup.catalogoDeEventos.advice.ErrorResponse;
 import com.codeup.catalogoDeEventos.advice.ResourceNotFoundException;
 import com.codeup.catalogoDeEventos.domain.Venue;
 import com.codeup.catalogoDeEventos.dto.VenueRequest;
-import com.codeup.catalogoDeEventos.service.ServiceVenue;
+import com.codeup.catalogoDeEventos.dto.VenueResponse;
+import com.codeup.catalogoDeEventos.service.VenueService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -30,7 +31,7 @@ import java.util.Map;
 @Tag(name = "Venue", description = "API for managing venues or locations")
 public class VenueController {
 
-    private final ServiceVenue service;
+    private final VenueService service;
 
     // ======================================================
     // 1. GET ALL
@@ -41,7 +42,7 @@ public class VenueController {
                     description = "Venues retrieved successfully",
                     content = @Content(
                             mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = Venue.class))
+                            array = @ArraySchema(schema = @Schema(implementation = VenueResponse.class))
                     ))
     })
     @GetMapping
@@ -127,7 +128,7 @@ public class VenueController {
             @ApiResponse(responseCode = "200",
                     description = "Venue updated successfully",
                     content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Venue.class))),
+                            schema = @Schema(implementation = VenueRequest.class))),
             @ApiResponse(responseCode = "400",
                     description = "Invalid input data (e.g., empty name)",
                     content = @Content(mediaType = "application/json",
@@ -143,7 +144,7 @@ public class VenueController {
             @PathVariable long id,
             @Valid @RequestBody VenueRequest request) {
 
-        return service.updateVenue(id, request)
+        return service.update(id, request)
                 .map(updatedVenue -> {
                     Map<String, Object> responseBody = new HashMap<>();
                     responseBody.put("message", "Venue with ID " + id + " updated successfully.");

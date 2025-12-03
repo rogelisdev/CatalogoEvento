@@ -30,7 +30,7 @@ public class EventRequest {
 
     @Positive(message = "Capacity must be greater than 0")
     @Schema(description = "Maximum event capacity", example = "1000", required = true)
-    private int capacity;
+    private Integer capacity;
 
     @Positive(message = "Venue ID must be greater than 0")
     @Schema(description = "ID of the venue for the event", example = "1", required = true)

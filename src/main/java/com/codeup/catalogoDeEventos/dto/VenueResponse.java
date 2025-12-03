@@ -8,9 +8,9 @@ import lombok.Getter;
 public class VenueResponse {
 
     private long id;
-    private String nombre;
-    private String direccion;
-    private String ciudad;
-    private String pais;
-    private int capacidad;
+    private String name;
+    private String address;
+    private String city;
+    private String country;
+    private int capacity;
 }

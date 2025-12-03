@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EventReponse {
+public class EventResponse {
     private long id;
     private String name;
     private String description;
